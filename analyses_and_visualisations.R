@@ -20,7 +20,7 @@ if (nrow(duplicates) > 0) {
 
 #### Main Model (Model 1) ####
 
-filtered_data <- alced_clean %>% filter(pro_kremlin_indicator == 0)
+filtered_data <- acled_clean %>% filter(pro_kremlin_indicator == 0)
 data_no_moscow <- filtered_data %>% filter(federal_subject != "The City of Moscow")
 
 model_1 <- lm(police_violence ~ factor(pol_expand) * factor(year) + auth_rec + org_c1 + 
@@ -39,8 +39,8 @@ stargazer(
   type = "text",
   se = list(robust_se_values), # Replace standard errors with robust SEs
   omit = c("factor\\(reg_code\\)"), # Omit factor variables
-  omit.labels = c("Federal Region FE"),              # Optional: Custom labels for omitted variables
-  keep.stat = c("n", "rsq", "adj.rsq"),                # Show sample size, R², adjusted R²
+  omit.labels = c("Federal Region FE"),              
+  keep.stat = c("n", "rsq", "adj.rsq"),               
   dep.var.labels = "Police Violence",
   covariate.labels = c("Political Protest", "Year 2019", "Year 2020", "Year 2021","Year 2022","Year 2023",
                        "Protest authorised", "Organisers", "Election Month", "Political x 2019", 
@@ -171,7 +171,7 @@ stargazer(
   se = list(robust_se_values), # Replace standard errors with robust SEs
   omit = c("factor\\(reg_code\\)", "pol_expand:month", "month_year_"), # Omit factor variables
   omit.labels = c("Region Code", "Month Year", "Month Year x Political"),              # Optional: Custom labels for omitted variables
-  keep.stat = c("n", "rsq", "adj.rsq"),                # Show sample size, R², adjusted R²
+  keep.stat = c("n", "rsq", "adj.rsq"),                
   dep.var.labels = "Police Violence",
   covariate.labels = c("Political", "Protest Authorised", "Organizers"), # Rename predictors
   out="tables/police_violence_subset_21_22.tex"

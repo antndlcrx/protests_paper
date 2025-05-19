@@ -3,7 +3,7 @@ import numpy as np
 import re
 
 # read data
-acled = pd.read_csv("data/acled_ru_2018_2023_mz.csv")
+acled = pd.read_csv("data/acled_deberta_preds_17_06_2024.csv")
 
 ## find unique categories
 # make a list of lists len = len(acled)

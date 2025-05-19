@@ -41,10 +41,10 @@ acled_clean <- acled_clean %>%
          post_invasion = factor(case_when(
            date >= as.Date("2022-02-24") ~ 1,
            TRUE ~ 0)),
-         police_violence = factor(case_when(
+         police_violence = case_when(
            sub_event_type %in% c("Protest with intervention", "Excessive force against protesters") ~ 1,
            TRUE ~ 0
-         )),
+         ),
          election_month = factor(case_when(
            month_year %in% c("2021-09", "2018-03", "2024-03", "2020-06", "2020-07") ~ 1,
            TRUE ~ 0))
@@ -175,7 +175,38 @@ acled_clean = acled_clean %>%
                                                        pred_labels  %in% c("economic", "social") ~ "2"
          )),
          ref="0"),
-  )
+  ) %>% 
+  mutate(pro_kremlin_indicator = case_when(org_indicator == "pro_kremlin" ~ 1,
+                                           T ~ 0))
+
+
+##### (un)authorised indicator #####
+
+#dictionary
+dict = quanteda::dictionary(list(unauthorized = c("not authorized", "unauthorized", "unlawful",
+                                                  "unsanctioned", "did not approve", 
+                                                  "did not authorize", "not sanctioned",
+                                                  "not been authorized"),
+                                 authorized = c("was authorized", "an authorized", 
+                                                "was approved", "was sanctioned", 
+                                                "authorized protest*")))
+
+# tokens with no pre-processing 
+corp_acled = corpus(acled, text_field = "notes",
+                    docid_field = "event_id_cnty")
+
+acled_toks = tokens(corp_acled)
+
+dict_toks = tokens_lookup(acled_toks, dictionary = dict)
+
+res = convert(dfm(dict_toks), to = "data.frame") %>% 
+  rename(event_id_cnty = doc_id)
+
+# merge 
+acled_clean = acled_clean %>% left_join(res, by = "event_id_cnty") 
+
+
+
 
 ## authorised and unauthorised dummies ##
 acled_clean <- acled_clean %>%

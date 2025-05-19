@@ -2,12 +2,10 @@
 # main file for the "Differentiated Repression: Evidence from Russian Protests" paper
 ##################################################
 
-
-
 #### Set Up ####
 pacman::p_load(tidyverse, rio, ggplot2, readr, broom, readxl,
                sandwich, lmtest, lubridate, margins, stargazer,
-               sjPlot, interplot, ggeffects)
+               sjPlot, interplot, ggeffects, quanteda)
 
 Sys.getlocale()
 # Set this to a locale that supports Cyrillic, for example, on Windows
@@ -32,7 +30,7 @@ codes <- codes %>%
 
 
 #### clean data ####
-source("data_cleaning_add_variablese.R", encoding = "UTF-8")
+source("data_cleaning_add_variables.R", encoding = "UTF-8")
 
 #### data analyses ####
 # conducts analyses reported in table 1 and figures 2 and 3 #

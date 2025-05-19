@@ -11,13 +11,14 @@
 
 #### Data Cleaning to Aid Visualisations ####
 
-acled_filtered_for_viz = acled %>% 
+acled_filtered_for_viz = acled_clean %>% 
   mutate(crowd_size = str_remove(tags, "crowd size=")) %>% 
   mutate(crowd_size = case_when(crowd_size == "no report" ~ NA,
                                 TRUE ~ crowd_size))
 
-acled_filtered_for_viz = acled_filtered_for_viz %>% 
-  filter(date >= '2021-01-01' & date <= '2023-10-31') %>% 
+acled_filtered_for_viz <- acled_filtered_for_viz %>%
+  mutate(date = as.Date(event_date)) %>%  
+  filter(date >= as.Date("2021-01-01") & date <= as.Date("2023-10-31")) %>%
   mutate(month = floor_date(date, unit = "month"))
 
 
@@ -32,10 +33,6 @@ acled_filtered_for_viz <- acled_filtered_for_viz %>%
   mutate(crowd_size_missing = ifelse(is.na(crowd_size), 1, 0))
 
 t_test_result <- t.test(crowd_size_missing ~ post_invasion, data = acled_filtered_for_viz)
-
-# Output results
-print("Proportion of Missing Crowd Sizes:")
-
 
 na_shares <- acled_filtered_for_viz %>%
   group_by(month) %>%
