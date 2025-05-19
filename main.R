@@ -15,8 +15,8 @@ Sys.setlocale("LC_ALL", "Russian")
 #### load data ####
 
 # we perform the following steps of data preprocessing in python for convenience and efficiency: 
-# 1. annotation of protest even data by protest organiser
-# 2. annotation of protest event data by protest type
+# 1. annotation of protest event data by protest type
+# 2. annotation of protest even data by protest organiser
 
 # the scripts below already contain both annotations and build up on them.
 
